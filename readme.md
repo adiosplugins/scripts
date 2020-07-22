@@ -2,6 +2,10 @@
 
 Easy build process automation that utilizes `@wordpress/scripts`, but adds a custom behaviour to `start`, `build` and adds hot reloading with BrowserSync to `hot` script.
 
+## Install
+
+`yarn add -D wpify/scripts`
+
 ## Available scripts:
 
 ```json
