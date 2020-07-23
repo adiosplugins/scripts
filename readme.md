@@ -4,7 +4,7 @@ Easy build process automation that utilizes `@wordpress/scripts`, but adds a cus
 
 ## Install
 
-`yarn add -D wpify/scripts`
+`yarn add -D wpify-scripts`
 
 ## Available scripts:
 

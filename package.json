@@ -9,9 +9,6 @@
   "bin": {
     "wpify": "./bin/wpify.js"
   },
-  "publishConfig": {
-    "registry": "https://npm.pkg.github.com/"
-  },
   "scripts": {
     "build": "./bin/wpify.js build",
     "start": "./bin/wpify.js start",
