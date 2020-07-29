@@ -12,7 +12,7 @@ const readFromPHP = (file) => {
       encoding: 'utf8',
     });
   } catch (e) {
-    console.error(e);
+    return null;
   }
 }
 

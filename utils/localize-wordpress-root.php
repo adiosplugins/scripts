@@ -1,4 +1,7 @@
 <?php
+error_reporting(0);
+define('WP_DEBUG', false);
+
 function localize_wordpress_root(string $dir = null) {
   if (!$dir) {
     $dir = getcwd();
