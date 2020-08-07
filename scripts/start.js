@@ -43,7 +43,7 @@ browserSync.init({
       quiet: true,
       path: webpackSettings.output.path,
       publicPath: webpackSettings.output.publicPath,
-      stats: {colors: true},
+      stats: webpackSettings.stats,
     }),
   ],
   https: true,
