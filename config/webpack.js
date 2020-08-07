@@ -107,8 +107,9 @@ module.exports = ({isDevelopment, isHot, publicPath, entry, jsonpFunction, path}
       plugins: [PnpWebpackPlugin.moduleLoader(module)],
     },
     optimization: {
-      splitChunks: {
+      splitChunks: isDevelopment ? undefined : {
         chunks: 'all', // This allows us to split the code into small chunks that loads faster
+        minChunks: 2,
       },
       minimizer: isDevelopment ? undefined : [
         new TerserJSPlugin({}),
