@@ -1,6 +1,6 @@
 {
   "name": "wpify-scripts",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "WPify scripts to automate development and builds",
   "main": "index.js",
   "repository": "https://github.com/wpify/scripts",

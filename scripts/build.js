@@ -28,12 +28,4 @@ webpack(custom.webpack(webpackSettings), (err, stats) => {
   const info = stats.toJson();
 
   copyAssets(custom.config.build, 'assets-manifest.json', custom.copy);
-
-  if (stats.hasErrors()) {
-    console.error(info.errors);
-  }
-
-  if (stats.hasWarnings()) {
-    console.warn(info.warnings);
-  }
 });
