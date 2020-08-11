@@ -61,6 +61,10 @@ module.exports = ({isDevelopment, isHot, publicPath, entry, jsonpFunction, path}
     };
   }
 
+  if (isHot) {
+    babelConfig.config.plugins.push(require.resolve('react-refresh/babel'));
+  }
+
   let postCssConfig;
 
   try {
@@ -77,10 +81,6 @@ module.exports = ({isDevelopment, isHot, publicPath, entry, jsonpFunction, path}
         require('postcss-pxtorem')(),
       ],
     };
-  }
-
-  if (isDevelopment && isHot) {
-    babelConfig.config.plugins.push(require.resolve('react-refresh/babel'));
   }
 
   const config = {
