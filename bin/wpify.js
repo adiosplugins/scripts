@@ -1,5 +1,7 @@
 #!/usr/bin/env node
 
+require('dotenv').config();
+
 const path = require('path');
 const spawn = require('cross-spawn');
 

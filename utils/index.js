@@ -16,9 +16,37 @@ const readFromPHP = (file) => {
   }
 }
 
-const getWordPressURL = () => readFromPHP(path.resolve(__dirname, 'get-wordpress-url.php'));
+const getWordPressURL = () => {
+  if (process.env.WPIFY_URL) {
+    return process.env.WPIFY_URL;
+  }
 
-const getPluginURL = () => readFromPHP(path.resolve(__dirname, 'get-plugin-url.php')).replace(getWordPressURL(), '');
+  try {
+    const detectedUrl = readFromPHP(path.resolve(__dirname, 'get-wordpress-url.php'));
+
+    if (detectedUrl) {
+      return detectedUrl;
+    }
+  } catch {}
+
+  return 'http://localhost';
+};
+
+const getPluginURL = () => {
+  if (process.env.WPIFY_PLUGIN_URL) {
+    return process.env.WPIFY_PLUGIN_URL;
+  }
+
+  try {
+    const detectedUrl = readFromPHP(path.resolve(__dirname, 'get-plugin-url.php'));
+
+    if (detectedUrl) {
+      return detectedUrl.replace(getWordPressURL(), '');
+    }
+  } catch {}
+
+  return '/wp-content/plugins/' + path.basename(process.env.PWD) + '/';
+};
 
 const getRandonString = (length, prefix = '') => {
   const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
