@@ -32,7 +32,7 @@ const handleSignal = (signal) => {
 const spawnScript = (scriptName, args = [], nodeArgs = []) => {
   const { signal, status } = spawn.sync(
     'node',
-    [ ...nodeArgs, path.resolve(__dirname, '../scripts', scriptName), ...args ],
+    [ path.resolve(__dirname, '../scripts', scriptName), ...args ],
     {
       stdio: 'inherit',
     }
@@ -49,7 +49,7 @@ if (!scriptName) {
   scriptName = scriptArgs.splice(0, 1).find(Boolean);
 }
 
-if (['build', 'start', 'hot'].includes(scriptName)) {
+if (['build', 'start', 'hot', 'archive'].includes(scriptName)) {
   spawnScript(scriptName, scriptArgs, nodeArgs);
 } else {
   wordPressSpawnScript(scriptName, scriptArgs, nodeArgs);
