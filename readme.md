@@ -13,6 +13,7 @@ Easy build process automation that utilizes `@wordpress/scripts`, but adds a cus
     "build": "wpify build",
     "start": "wpify start",
     "hot": "wpify hot",
+    "archive": "wpify archive",
     "check-engines": "wpify check-engines",
     "check-licenses": "wpify check-licenses",
     "format:js": "wpify format-js",
@@ -28,6 +29,13 @@ Easy build process automation that utilizes `@wordpress/scripts`, but adds a cus
 ```
 
 ## Configuration
+
+Environment file `.env` can contain the following:
+
+```
+WPIFY_URL=http://www.mywordpressurl.test
+WPIFY_PLUGIN_URL=/wp-content/plugins/mypluginslug/
+```
 
 Configuration file `wpify.config.js` is in the root directory:
 
@@ -54,8 +62,6 @@ module.exports = {
   },
   browserSync: (config) => {
     // custom configuration of browserSync init configuration
-    config.proxy.target = 'https://www.some-custom-url.test';
-
     return config;
   },
 };
