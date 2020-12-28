@@ -250,7 +250,9 @@ module.exports = ({isDevelopment, isHot, publicPath, entry, jsonpFunction, path}
         },
         {
           test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
-          issuer: /\.jsx?$/,
+          issuer: {
+            test: /\.jsx?$/
+          },
           use: [
             {
               loader: require.resolve('@svgr/webpack'),
