@@ -10,7 +10,7 @@ const webpackSettings = webpackConfig({
   isHot: false,
   path: path.resolve(process.cwd(), custom.config.build),
   publicPath: pluginURL + custom.config.build + '/',
-  jsonpFunction: getRandonString(10, '_jsonp'),
+  chunkLoadingGlobal: getRandonString(10, '_jsonp'),
   entry: custom.config.entry,
 });
 

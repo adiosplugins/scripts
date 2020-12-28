@@ -48,10 +48,8 @@ browserSync.init(custom.browserSync({
   },
   middleware: [
     webpackDevMiddleware(bundler, {
-      quiet: true,
-      path: webpackSettings.output.path,
       publicPath: webpackSettings.output.publicPath,
-      stats: webpackSettings.stats,
+      writeToDisk: true,
     }),
     webpackHotMiddleware(bundler, {
       path: '/__webpack_hmr',

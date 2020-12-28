@@ -32,11 +32,7 @@ function createArchive(filename = 'archive.zip', globs = []) {
   archive.finalize();
 }
 
-const basePath = path.join(process.cwd(), '..');
-
-const zipfile = scriptArgs.length > 0 ? scriptArgs[0] : path.basename(process.cwd()) + '.zip';
-
-createArchive(path.join(basePath, zipfile), [
+createArchive(path.resolve(process.cwd(), '..', scriptArgs.length > 0 ? scriptArgs[0] : path.basename(process.cwd()) + '.zip'), [
   '**',
   '!.git',
   '!.vscode',

@@ -40,10 +40,8 @@ browserSync.init({
   },
   middleware: [
     webpackDevMiddleware(bundler, {
-      quiet: true,
-      path: webpackSettings.output.path,
       publicPath: webpackSettings.output.publicPath,
-      stats: webpackSettings.stats,
+      writeToDisk: true,
     }),
   ],
   https: true,

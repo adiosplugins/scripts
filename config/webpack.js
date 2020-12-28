@@ -8,7 +8,7 @@ const imageminGifsicle = require('imagemin-gifsicle');
 const imageminMozjpeg = require('imagemin-mozjpeg');
 const imageminPngquant = require('imagemin-pngquant');
 const imageminSvgo = require('imagemin-svgo');
-const WebpackManifestPlugin = require('webpack-manifest-plugin');
+const { WebpackManifestPlugin } = require('webpack-manifest-plugin');
 const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin');
 const DependencyExtractionWebpackPlugin = require('@wordpress/dependency-extraction-webpack-plugin');
 const {defaultRequestToExternal, defaultRequestToHandle} = require('@wordpress/dependency-extraction-webpack-plugin/lib/util');
@@ -142,9 +142,6 @@ module.exports = ({isDevelopment, isHot, publicPath, entry, jsonpFunction, path}
           use: [
             {
               loader: MiniCssExtractPlugin.loader,
-              options: {
-                sourceMap: isDevelopment,
-              },
             },
             {
               loader: require.resolve('css-loader'),
@@ -156,8 +153,10 @@ module.exports = ({isDevelopment, isHot, publicPath, entry, jsonpFunction, path}
             {
               loader: require.resolve('postcss-loader'),
               options: {
-                sourceMap: isDevelopment,
-                ...postCssConfig
+                postcssOptions: {
+                  sourceMap: isDevelopment,
+                  ...postCssConfig
+                },
               },
             },
             {
@@ -178,9 +177,6 @@ module.exports = ({isDevelopment, isHot, publicPath, entry, jsonpFunction, path}
           use: [
             {
               loader: MiniCssExtractPlugin.loader,
-              options: {
-                sourceMap: isDevelopment,
-              },
             },
             {
               loader: require.resolve('css-loader'),
@@ -195,8 +191,10 @@ module.exports = ({isDevelopment, isHot, publicPath, entry, jsonpFunction, path}
             {
               loader: require.resolve('postcss-loader'),
               options: {
-                sourceMap: isDevelopment,
-                ...postCssConfig
+                postcssOptions: {
+                  sourceMap: isDevelopment,
+                  ...postCssConfig
+                }
               },
             },
             {
@@ -252,9 +250,7 @@ module.exports = ({isDevelopment, isHot, publicPath, entry, jsonpFunction, path}
         },
         {
           test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
-          issuer: {
-            test: /\.jsx?$/,
-          },
+          issuer: /\.jsx?$/,
           use: [
             {
               loader: require.resolve('@svgr/webpack'),
