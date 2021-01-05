@@ -22,7 +22,7 @@ browserSync.watch('*.php', browserSync.reload);
 
 browserSync.watch(custom.config.build + '/**.*', browserSync.reload);
 
-browserSync.watch(custom.config.build + '/assets-manifest.json', () => {
+browserSync.watch(custom.config.build + '/**.*', () => {
   copyAssets(custom.config.build, 'assets-manifest.json', custom.copy);
 });
 

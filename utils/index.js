@@ -67,12 +67,13 @@ const getConfig = () => {
 
   if (result && result.config) {
     const {
-      config = {build: 'build'},
+      config = { build: 'build' },
       webpack = config => config,
       browserSync = config => config,
+      copy = {},
     } = result.config;
 
-    return {config, webpack, browserSync};
+    return { config, webpack, browserSync, copy };
   }
 };
 
@@ -85,26 +86,50 @@ const copyAssets = (build, manifestFile, files) => {
     const manifest = require(path.resolve(process.cwd(), build, manifestFile));
 
     Object.keys(files)
-    .filter((source) => fs.existsSync(path.resolve(process.cwd(), build, manifest[source])))
-    .forEach((source) => {
-      if (source.endsWith('.css')) {
-        const css = fs.readFileSync(path.resolve(process.cwd(), build, manifest[source]));
-        postcss([cssnano])
-        .process(css, {
-          from: path.resolve(process.cwd(), build, manifest[source]),
-          to: path.resolve(files[source]),
-          map: false,
-        })
-        .then((result) => {
-          fs.writeFileSync(path.resolve(files[source]), result.css);
-        });
-      } else {
-        fs.copyFileSync(
-          path.resolve(process.cwd(), build, manifest[source]),
-          path.resolve(files[source]),
-        );
-      }
-    });
+      .map((source) => {
+        const realFile = manifest[source];
+        let filePath = null;
+        let rootPath = process.cwd();
+
+        if (!realFile) {
+          console.error(`Error: File ${source} doesn't exists.`);
+          return null;
+        }
+
+        // Find WordPress root path
+        do {
+          if (fs.readdirSync(rootPath).includes('wp-includes')) {
+            break;
+          }
+          rootPath = path.resolve(rootPath, '..');
+        } while (rootPath !== '/')
+
+        if (realFile.match(/^(https?:)?\/\//)) {
+          filePath = manifest[source];
+        } else if (realFile.startsWith('/')) {
+          filePath = path.join(rootPath, manifest[source]);
+        } else {
+          filePath = path.resolve(path.resolve(process.cwd(), build, manifest[source]))
+        }
+
+        if (fs.existsSync(filePath)) {
+          return {
+            from: filePath,
+            to: path.resolve(process.cwd(), files[source]),
+          };
+        }
+      })
+      .filter(Boolean)
+      .forEach((file) => {
+        if (file.from.endsWith('.css')) {
+          const css = fs.readFileSync(file.from);
+          postcss([cssnano])
+            .process(css, { ...file, map: false })
+            .then(result => fs.writeFileSync(file.to, result.css));
+        } else {
+          fs.copyFileSync(file.from, file.to);
+        }
+      });
   }
 };
 
