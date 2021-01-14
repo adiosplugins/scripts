@@ -2,7 +2,7 @@ const webpack = require('webpack');
 const TerserJSPlugin = require('terser-webpack-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const PnpWebpackPlugin = require('pnp-webpack-plugin');
-const {CleanWebpackPlugin} = require('clean-webpack-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const imageminGifsicle = require('imagemin-gifsicle');
 const imageminMozjpeg = require('imagemin-mozjpeg');
@@ -11,8 +11,11 @@ const imageminSvgo = require('imagemin-svgo');
 const { WebpackManifestPlugin } = require('webpack-manifest-plugin');
 const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin');
 const DependencyExtractionWebpackPlugin = require('@wordpress/dependency-extraction-webpack-plugin');
-const {defaultRequestToExternal, defaultRequestToHandle} = require('@wordpress/dependency-extraction-webpack-plugin/lib/util');
-const FixStyleWebpackPlugin = require('@wordpress/scripts/config/fix-style-webpack-plugin')
+const {
+  defaultRequestToExternal,
+  defaultRequestToHandle
+} = require('@wordpress/dependency-extraction-webpack-plugin/lib/util');
+const FixStyleWebpackPlugin = require('@wordpress/scripts/config/fix-style-webpack-plugin');
 const WriteFilePlugin = require('write-file-webpack-plugin');
 const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
 const findBabelConfig = require('find-babel-config');
@@ -42,25 +45,13 @@ const addHotReload = (entry) => {
   return entry;
 };
 
-module.exports = ({isDevelopment, isHot, publicPath, entry, jsonpFunction, path}) => {
+module.exports = ({ isDevelopment, isHot, publicPath, entry, jsonpFunction, path }) => {
   const mode = (isDevelopment || isHot) ? 'development' : 'production';
 
   const babelConfig = findBabelConfig.sync(process.cwd());
 
   if (!babelConfig.config) {
-    babelConfig.config = {
-      presets: [
-        '@babel/preset-env',
-        '@babel/preset-react'
-      ],
-      plugins: [
-        '@babel/plugin-proposal-object-rest-spread',
-        '@babel/plugin-syntax-dynamic-import',
-        '@babel/plugin-proposal-optional-chaining',
-        '@babel/plugin-syntax-class-properties',
-        '@babel/plugin-proposal-class-properties'
-      ],
-    };
+    babelConfig.config = require('./babel.config');
   }
 
   if (isHot) {
@@ -72,17 +63,7 @@ module.exports = ({isDevelopment, isHot, publicPath, entry, jsonpFunction, path}
   try {
     postCssConfig = findPostCssConfig.sync(process.cwd());
   } catch {
-    postCssConfig = {
-      plugins: [
-        require('postcss-import')(),
-        require('postcss-preset-env')(),
-        require('postcss-font-display')({
-          display: 'swap',
-          replace: false
-        }),
-        require('postcss-pxtorem')(),
-      ],
-    };
+    postCssConfig = require('./postcss.config');
   }
 
   const config = {
@@ -281,19 +262,19 @@ module.exports = ({isDevelopment, isHot, publicPath, entry, jsonpFunction, path}
                 plugins: !isDevelopment && [
                   imageminSvgo({
                     plugins: [
-                      {removeTitle: true},
-                      {cleanupAttrs: true},
-                      {removeXMLProcInst: true},
-                      {removeComments: true},
-                      {removeMetadata: true},
-                      {removeXMLNS: false},
-                      {removeEditorsNSData: true},
-                      {removeEmptyAttrs: true},
-                      {convertPathData: true},
-                      {convertTransform: true},
-                      {removeUnusedNS: true},
-                      {mergePaths: true},
-                      {convertShapeToPath: true},
+                      { removeTitle: true },
+                      { cleanupAttrs: true },
+                      { removeXMLProcInst: true },
+                      { removeComments: true },
+                      { removeMetadata: true },
+                      { removeXMLNS: false },
+                      { removeEditorsNSData: true },
+                      { removeEmptyAttrs: true },
+                      { convertPathData: true },
+                      { convertTransform: true },
+                      { removeUnusedNS: true },
+                      { mergePaths: true },
+                      { convertShapeToPath: true },
                     ],
                   }),
                 ],
