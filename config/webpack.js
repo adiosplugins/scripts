@@ -71,10 +71,9 @@ module.exports = ({ isDevelopment, isHot, publicPath, entry, jsonpFunction, path
     entry: isHot ? addHotReload(entry) : entry,
     output: {
       path, // where to put compiled files to
-      filename: isDevelopment ? `[name].js` : `[name].[hash:8].js`,
-      chunkFilename: isDevelopment ? `[name].js` : `[name].[hash:8].js`,
+      filename: '[name].js',
+      chunkFilename: '[name].js',
       jsonpFunction, // pick the unique jsonp function name, so the react apps doesn't collide
-      publicPath,
       pathinfo: !isDevelopment,
     },
     context: process.cwd(),
@@ -196,7 +195,7 @@ module.exports = ({ isDevelopment, isHot, publicPath, entry, jsonpFunction, path
           test: /.(eot|woff|woff2|ttf|otf)$/,
           loader: require.resolve('file-loader'),
           options: {
-            name: isDevelopment ? `[name].[ext]` : `[name].[hash:8].[ext]`,
+            name: '[name].[ext]',
             outputPath: 'fonts',
           },
         },
@@ -207,7 +206,7 @@ module.exports = ({ isDevelopment, isHot, publicPath, entry, jsonpFunction, path
               loader: require.resolve('url-loader'),
               options: {
                 limit: 8192,
-                name: isDevelopment ? `[name].[ext]` : `[name].[hash:8].[ext]`,
+                name: '[name].[ext]',
                 outputPath: 'images',
               },
             },
@@ -252,7 +251,7 @@ module.exports = ({ isDevelopment, isHot, publicPath, entry, jsonpFunction, path
               loader: require.resolve('url-loader'),
               options: {
                 limit: 8192,
-                name: isDevelopment ? `[name].[ext]` : `[name].[hash:8].[ext]`,
+                name: '[name].[ext]',
                 outputPath: 'images',
               },
             },
@@ -294,7 +293,7 @@ module.exports = ({ isDevelopment, isHot, publicPath, entry, jsonpFunction, path
         cleanStaleWebpackAssets: false,
       }),
       new MiniCssExtractPlugin({ // Extract CSS files
-        filename: isDevelopment ? `[name].css` : `[name].[hash:8].css`,
+        filename: '[name].css',
       }),
       new WebpackManifestPlugin({
         fileName: 'assets-manifest.json', // This file helps us with loading the assets in WordPress

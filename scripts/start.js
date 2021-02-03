@@ -3,15 +3,13 @@ const webpack = require('webpack');
 const webpackConfig = require('../config/webpack');
 const webpackDevMiddleware = require('webpack-dev-middleware');
 const browserSync = require('browser-sync').create();
-const {getPluginURL, getRandonString, getConfig, copyAssets} = require('../utils');
+const { getRandonString, getConfig, copyAssets } = require('../utils');
 
 const custom = getConfig();
-const pluginURL = getPluginURL();
 const webpackSettings = webpackConfig({
   isDevelopment: true,
   isHot: false,
   path: path.resolve(process.cwd(), custom.config.build),
-  publicPath: pluginURL + custom.config.build + '/',
   jsonpFunction: getRandonString(10, '_jsonp'),
   entry: custom.config.entry,
 });
