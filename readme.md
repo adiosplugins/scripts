@@ -1,6 +1,6 @@
 # WPify scripts
 
-Easy build process automation that utilizes `@wordpress/scripts`, but adds a custom behaviour to `start`, `build` and adds hot reloading with BrowserSync to `hot` script.
+Easy build process automation that utilizes `@wordpress/scripts`, but adds hot reloading with BrowserSync to `hot` script and creating plugin archive with `archive` script.
 
 ## Install
 
@@ -9,7 +9,8 @@ Easy build process automation that utilizes `@wordpress/scripts`, but adds a cus
 ## Available scripts:
 
 ```json
-"scripts": {
+{
+  "scripts": {
     "build": "wpify build",
     "start": "wpify start",
     "hot": "wpify hot",
@@ -25,17 +26,11 @@ Easy build process automation that utilizes `@wordpress/scripts`, but adds a cus
     "packages-update": "wpify packages-update",
     "test:e2e": "wpify test-e2e",
     "test:unit": "wpify test-unit-js"
-},
+  }
+}
 ```
 
 ## Configuration
-
-Environment file `.env` can contain the following:
-
-```
-WPIFY_URL=http://www.mywordpressurl.test
-WPIFY_PLUGIN_URL=/wp-content/plugins/mypluginslug/
-```
 
 Configuration file `wpify.config.js` is in the root directory:
 
@@ -43,6 +38,7 @@ Configuration file `wpify.config.js` is in the root directory:
 const path = require('path');
 
 module.exports = {
+  wordPressUrl: 'http://localhost',
   config: {
     build: 'build', // folder where built files end-up
     entry: { // entry points
@@ -54,7 +50,7 @@ module.exports = {
     },
   },
   copy: { // copy built files somewhere else
-    'block-editor.css': path.resolve('./themes/custom-theme/editor-style.css'),
+    'editor-style.scss': path.resolve('./themes/custom-theme/editor-style.css'),
   },
   webpack: (config) => {
     // custom modification of Webpack configuration

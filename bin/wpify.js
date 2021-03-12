@@ -1,7 +1,5 @@
 #!/usr/bin/env node
 
-require('dotenv').config();
-
 const path = require('path');
 const spawn = require('cross-spawn');
 
@@ -32,7 +30,7 @@ const handleSignal = (signal) => {
 const spawnScript = (scriptName, args = [], nodeArgs = []) => {
   const { signal, status } = spawn.sync(
     'node',
-    [ path.resolve(__dirname, '../scripts', scriptName), ...args ],
+    [path.resolve(__dirname, '../scripts', scriptName), ...args],
     {
       stdio: 'inherit',
     }
@@ -49,8 +47,12 @@ if (!scriptName) {
   scriptName = scriptArgs.splice(0, 1).find(Boolean);
 }
 
-if (['build', 'start', 'hot', 'archive'].includes(scriptName)) {
+if (['hot', 'archive'].includes(scriptName)) {
   spawnScript(scriptName, scriptArgs, nodeArgs);
 } else {
+  if (['build', 'start'].includes(scriptName)) {
+    scriptArgs.push('--config', path.resolve(__dirname, '../config/webpack.config.js'));
+  }
+
   wordPressSpawnScript(scriptName, scriptArgs, nodeArgs);
 }

@@ -1,28 +1,16 @@
-const path = require('path');
 const webpack = require('webpack');
-const webpackConfig = require('../config/webpack');
+const webpackConfig = require('../config/webpack.hot.config');
 const webpackDevMiddleware = require('webpack-dev-middleware');
 const webpackHotMiddleware = require('webpack-hot-middleware');
 const browserSync = require('browser-sync').create();
-const {getPluginURL, getWordPressURL, getRandonString, getConfig, copyAssets} = require('../utils');
 
-const custom = getConfig();
-const wordPressURL = getWordPressURL();
-const pluginURL = getPluginURL();
-const webpackSettings = custom.webpack(webpackConfig({
-  isDevelopment: true,
-  isHot: true,
-  path: path.resolve(process.cwd(), custom.config.build),
-  publicPath: pluginURL + custom.config.build + '/',
-  jsonpFunction: getRandonString(10, '_jsonp'),
-  entry: custom.config.entry,
-}));
+const { getConfig } = require('../utils');
 
-const bundler = webpack(
-  webpackSettings
-);
+const config = getConfig();
 
-browserSync.watch(custom.config.build + '/**/*.css', function (event, file) {
+const bundler = webpack(webpackConfig);
+
+browserSync.watch(webpackConfig.output.path + '/**/*.css', function (event, file) {
   if (event === 'change') {
     browserSync.reload(file);
   } else {
@@ -30,15 +18,11 @@ browserSync.watch(custom.config.build + '/**/*.css', function (event, file) {
   }
 });
 
-browserSync.watch(custom.config.build + '/assets-manifest.json', () => {
-  copyAssets(custom.config.build, 'assets-manifest.json', custom.copy);
-});
-
 browserSync.watch('*.php', browserSync.reload);
 
-browserSync.init(custom.browserSync({
+browserSync.init(config.browserSync({
   proxy: {
-    target: wordPressURL,
+    target: config.wordPressUrl,
     ws: true,
     proxyReq: [
       function (proxyReq) {
@@ -48,7 +32,6 @@ browserSync.init(custom.browserSync({
   },
   middleware: [
     webpackDevMiddleware(bundler, {
-      publicPath: webpackSettings.output.publicPath,
       writeToDisk: true,
     }),
     webpackHotMiddleware(bundler, {
